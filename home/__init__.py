@@ -16,7 +16,7 @@ ALPHANUMBERIC_CHARS = string.ascii_uppercase + string.digits
 def generate_coupon_code(length=10, max_attempts=10):
 
     if length <=0:
-        raise valueError("Coupon code length must be greater than zero.")
+        raise ValueError("Coupon code length must be greater than zero.")
 
     for attempt in range(max_attempts):
         code = ''.join(secrets.choice(ALPHANUMBERIC_CHARS) for _ in range(length))
@@ -25,6 +25,6 @@ def generate_coupon_code(length=10, max_attempts=10):
             return code
 
     raise RuntimeError(
-        f"could not generate a unique coupon code after {max_attempt} attempts."
-        "consider incerasing the length the length or max_attempt."
+        f"could not generate a unique coupon code after {max_attempts} attempts."
+        "consider incerasing the length the length or max_attempts."
     )            
