@@ -5,12 +5,10 @@ class Coupon(models.Model):
     is_active = models.BooleanField(default=True)
 
     def __str__(self):
-        return **self.code**
+        return self.code
 
 import secrets        
 import string
-from django.conf import settings
-from .models import Coupon
 
 ALPHANUMBERIC_CHARS = string.ascii_uppercase + string.digits
 def generate_coupon_code(length=10, max_attempts=10):
@@ -47,4 +45,4 @@ class Coupon(models.Model):
         verbose_name_plural = "Coupons"
 
     def __str__(self):
-        return **slef.code**        
+        return slef.code
