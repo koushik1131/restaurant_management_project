@@ -46,3 +46,38 @@ class Coupon(models.Model):
 
     def __str__(self):
         return **slef.code**
+
+    class ActiveOrderManager(models.manager):
+
+        def get_active_orders(self):
+
+            return self.filter(status__in=['pending', 'processing'])
+
+    class Order(models.Model):
+
+        STATUS_CHOICES = [
+            ('pending', 'Pending payment'),
+            ('processing', 'Processing'),
+            ('shipped', 'Shipped'),
+            ('delivered', 'Delivered'),
+            ('cancelled', 'Cancelled'),
+        ]
+
+        created_at = models.DataTimeField(auto_now_add=True)
+        total_amount = models.DecimalField(max_digits=10, decimal_places=2, default=Decimal('0.00'))
+        status = models.CharField(
+            max_length=20,
+            choices=STATUS_CHOICES,
+            default='pendig',
+            db_index=True
+        )
+
+        objects = ActiveOrderManager()
+
+        class Meta:
+            ordering = ['-created_at']
+            verbose_name = "Order"
+            verbose_name_plural = "Oreders"
+
+        def __str__(self):
+            return f"Oreder #{self.pk} - {self.get_status_display()}"    
