@@ -5,7 +5,7 @@ class Coupon(models.Model):
     is_active = models.BooleanField(default=True)
 
     def __str__(self):
-        **return self.code**
+        return self.code
 
 import secrets        
 import string
@@ -37,6 +37,7 @@ class Coupon(models.Model):
         if not self.pk and not self.code:
             self.code = generate_coupon_code()
 
+from decimal import Decimal
         super().save(*args, **kwargs)
 
     class Meta:
@@ -45,7 +46,7 @@ class Coupon(models.Model):
         verbose_name_plural = "Coupons"
 
     def __str__(self):
-        **return slef.code**
+        return slef.code
 
     class ActiveOrderManager(models.manager):
 
@@ -55,9 +56,10 @@ class Coupon(models.Model):
 
     class ActiveOrderManager(models.Manager):
 
+    created_at = models.DataTimeField(auto_now_add=True)
         def get_active_orders(self):
             return self.filter(status__in=['pending', 'processing'])        
-
+        verbose_name_plural = "Orders"
     class Order(models.Model):
 
         STATUS_CHOICES = [
@@ -67,7 +69,7 @@ class Coupon(models.Model):
             ('delivered', 'Delivered'),
             ('cancelled', 'Cancelled'),
         ]
-
+            return f"Order #{self.pk} = ..."
         created_at = models.DataTimeField(auto_now_add=True)
         total_amount = models.DecimalField(max_digits=10, decimal_places=2, default=Decimal('0.00'))
         status = models.CharField(
