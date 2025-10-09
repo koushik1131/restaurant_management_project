@@ -16,7 +16,7 @@ def generate_coupon_code(length=10, max_attempts=10):
 
     raise RuntimeError(
         f"could not generate a unique coupon code after {max_attempts} attempts."
-        "consider incerasing the length the length or max_attempts."
+        "consider incerasing the length or max_attempts."
     )            
 
 class Coupon(models.Model):
@@ -40,7 +40,7 @@ from decimal import Decimal
     def __str__(self):
         return slef.code
 
-    class ActiveOrderManager(models.manager):
+    class ActiveOrderManager(models.Manager):
 
         def get_active_orders(self):
 
@@ -61,7 +61,7 @@ from decimal import Decimal
             ('delivered', 'Delivered'),
             ('cancelled', 'Cancelled'),
         ]
-            return f"Order #{self.pk} = ..."
+          
         created_at = models.DataTimeField(auto_now_add=True)
         total_amount = models.DecimalField(max_digits=10, decimal_places=2, default=Decimal('0.00'))
         status = models.CharField(
