@@ -1,12 +1,4 @@
 from django.db import models
-
-class Coupon(models.Model):
-    code = models.CharField(max_length=50, unique=True)
-    is_active = models.BooleanField(default=True)
-
-    def __str__(self):
-        return self.code
-
 import secrets        
 import string
 
@@ -84,7 +76,7 @@ from decimal import Decimal
         class Meta:
             ordering = ['-created_at']
             verbose_name = "Order"
-            verbose_name_plural = "Oreders"
+            verbose_name_plural = "Orders"
 
         def __str__(self):
-            return f"Oreder #{self.pk} - {self.get_status_display()}"    
+            return f"Order #{self.pk} - {self.get_status_display()}"    
