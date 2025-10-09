@@ -62,12 +62,12 @@ from decimal import Decimal
             ('cancelled', 'Cancelled'),
         ]
           
-        created_at = models.DataTimeField(auto_now_add=True)
+        created_at = models.DateTimeField(auto_now_add=True)
         total_amount = models.DecimalField(max_digits=10, decimal_places=2, default=Decimal('0.00'))
         status = models.CharField(
             max_length=20,
             choices=STATUS_CHOICES,
-            default='pendig',
+            default='pending',
             db_index=True
         )
 
