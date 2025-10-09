@@ -2,7 +2,7 @@ from django.db import models
 import secrets        
 import string
 
-ALPHANUMBERIC_CHARS = string.ascii_uppercase + string.digits
+ALPHANUMERIC_CHARS = string.ascii_uppercase + string.digits
 def generate_coupon_code(length=10, max_attempts=10):
 
     if length <=0:
@@ -38,7 +38,7 @@ from decimal import Decimal
         verbose_name_plural = "Coupons"
 
     def __str__(self):
-        return slef.code
+        return self.code
 
     class ActiveOrderManager(models.Manager):
 
@@ -48,10 +48,10 @@ from decimal import Decimal
 
     class ActiveOrderManager(models.Manager):
 
-    created_at = models.DataTimeField(auto_now_add=True)
+    created_at = models.DateTimeField(auto_now_add=True)
         def get_active_orders(self):
             return self.filter(status__in=['pending', 'processing'])        
-        verbose_name_plural = "Orders"
+        verbose_name_plural = "Order"
     class Order(models.Model):
 
         STATUS_CHOICES = [
