@@ -30,7 +30,7 @@ class Coupon(models.Model):
             self.code = generate_coupon_code()
 
 from decimal import Decimal
-        super().save(*args, **kwargs)
+        super().save(*args,**kwargs)
 
     class Meta:
         ordering = ['-created_at']
