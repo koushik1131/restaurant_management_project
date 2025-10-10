@@ -47,8 +47,7 @@ from decimal import Decimal
             return self.filter(status__in=['pending', 'processing'])
 
     class ActiveOrderManager(models.Manager):
-
-    created_at = models.DateTimeField(auto_now_add=True)
+        
         def get_active_orders(self):
             return self.filter(status__in=['pending', 'processing'])        
         verbose_name_plural = "Order"
