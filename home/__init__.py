@@ -16,7 +16,7 @@ def generate_coupon_code(length=10, max_attempts=10):
 
     raise RuntimeError(
         f"could not generate a unique coupon code after {max_attempts} attempts."
-        "consider incerasing the length or max_attempts."
+        "consider increasing the length or max_attempts."
     )            
 
 class Coupon(models.Model):
@@ -30,7 +30,7 @@ class Coupon(models.Model):
             self.code = generate_coupon_code()
 
 from decimal import Decimal
-        super().save(*args,**kwargs)
+        super().save
 
     class Meta:
         ordering = ['-created_at']
@@ -39,12 +39,6 @@ from decimal import Decimal
 
     def __str__(self):
         return self.code
-
-    class ActiveOrderManager(models.Manager):
-
-        def get_active_orders(self):
-
-            return self.filter(status__in=['pending', 'processing'])
 
     class ActiveOrderManager(models.Manager):
         
