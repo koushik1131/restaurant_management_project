@@ -9,7 +9,7 @@ def generate_coupon_code(length=10, max_attempts=10):
         raise ValueError("Coupon code length must be greater than zero.")
 
     for attempt in range(max_attempts):
-        code = ''.join(secrets.choice(ALPHANUMBERIC_CHARS) for _ in range(length))
+        code = ''.join(secrets.choice(ALPHANUMERIC_CHARS) for _ in range(length))
 
         if not Coupon.objects.filter(code=code).exists():
             return code
@@ -24,7 +24,7 @@ class Coupon(models.Model):
     is_active = models.BooleanField(default=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
-    def save(self, *args, **kwargs):
+    def save(self,*args,**kwargs):
 
         if not self.pk and not self.code:
             self.code = generate_coupon_code()
