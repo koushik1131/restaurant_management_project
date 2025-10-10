@@ -41,8 +41,6 @@ from decimal import Decimal
         return self.code
 
     class ActiveOrderManager(models.Manager):
-        
-        def get_active_orders(self):
             return self.filter(status__in=['pending', 'processing'])        
         verbose_name_plural = "Order"
     class Order(models.Model):
