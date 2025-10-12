@@ -1,6 +1,7 @@
 from django.db import models
 import secrets        
 import string
+from decimal import Decimal
 
 ALPHANUMERIC_CHARS = string.ascii_uppercase + string.digits
 def generate_coupon_code(length=10, max_attempts=10):
@@ -29,8 +30,7 @@ class Coupon(models.Model):
         if not self.pk and not self.code:
             self.code = generate_coupon_code()
 
-from decimal import Decimal
-        super().save
+            super().save(*args, **kwargs)
 
     class Meta:
         ordering = ['-created_at']
@@ -41,8 +41,8 @@ from decimal import Decimal
         return self.code
 
     class ActiveOrderManager(models.Manager):
-            return self.filter(status__in=['pending', 'processing'])        
-        verbose_name_plural = "Order"
+        def get_queryset(self):
+            return super().get_queryset().filter(status__in=['pending', 'processing'])
     class Order(models.Model):
 
         STATUS_CHOICES = [
@@ -63,6 +63,7 @@ from decimal import Decimal
         )
 
         objects = ActiveOrderManager()
+        is_active = ActiveOrderManager()
 
         class Meta:
             ordering = ['-created_at']
