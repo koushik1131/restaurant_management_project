@@ -2,6 +2,11 @@ from django.db import models
 import secrets        
 import string
 from decimal import Decimal
+from django.db.models import Manager
+
+class ActiveOrderManager(Manager):
+    def get_queryset(self):
+        return super().get_queryset().filter(status__in['pending', 'processing'])
 
 ALPHANUMERIC_CHARS = string.ascii_uppercase + string.digits
 def generate_coupon_code(length=10, max_attempts=10):
