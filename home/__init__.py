@@ -6,7 +6,7 @@ from django.db.models import Manager
 
 class ActiveOrderManager(Manager):
     def get_queryset(self):
-        return super().get_queryset().filter(status__in['pending', 'processing'])
+        return super().get_queryset().filter(status__in=['pending', 'processing'])
 
 ALPHANUMERIC_CHARS = string.ascii_uppercase + string.digits
 def generate_coupon_code(length=10, max_attempts=10):
@@ -65,8 +65,8 @@ class Coupon(models.Model):
             db_index=True
         )
 
-        objects = ActiveOrderManager()
-        is_active = ActiveOrderManager()
+        objects = models.Manager()
+        active_orders = ActiveOrderManager()
 
         class Meta:
             ordering = ['-created_at']
