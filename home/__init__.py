@@ -35,7 +35,7 @@ class Coupon(models.Model):
         if not self.pk and not self.code:
             self.code = generate_coupon_code()
 
-            super().save(*args, **kwargs)
+        super().save(*args, **kwargs)
 
     class Meta:
         ordering = ['-created_at']
@@ -46,7 +46,7 @@ class Coupon(models.Model):
         return self.code
 
 
-    class Order(models.Model):
+class Order(models.Model):
 
         """Model for a customer order."""
 
