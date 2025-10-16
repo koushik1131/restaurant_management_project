@@ -26,7 +26,7 @@ def generate_coupon_code(length=10, max_attempts=10):
     )            
 
 class Coupon(models.Model):
-    code = models.CharField(max_length=50, unique=True)
+    code = models.CharField(max_length=50, unique=True, help_text="The unique code for the coupon.")
     is_active = models.BooleanField(default=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
@@ -47,6 +47,8 @@ class Coupon(models.Model):
 
 
     class Order(models.Model):
+
+        """Model for a customer order."""
 
         STATUS_CHOICES = [
             ('pending', 'Pending payment'),
