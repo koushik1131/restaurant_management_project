@@ -88,10 +88,7 @@ class Order(models.Model):
             default='pending',
             db_index=True
         )
-        objects = models.Manager()
-
-        active_orders = ActiveOrderManager()
-
+    
         class Meta:
             ordering = ['-created_at']
             verbose_name = "Order"
