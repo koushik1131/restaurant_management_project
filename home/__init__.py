@@ -10,25 +10,6 @@ class ActiveOrderManager(Manager):
 
 ALPHANUMERIC_CHARS = string.ascii_uppercase + string.digits
 
-class  Coupon(models.Model):
-    code = models.CharField(max_length=50, unique=True, help_text="The unique code for the coupon.")
-    is_active = models.BooleanField(default=True)
-    created_at = models.DateTimeField(auto_now_add=True)
-
-    def save(self,*args,**kwargs):
-        if not self.pk and not self.code:
-            self.code = generate_coupon_code()
-
-        super().save(*args, **kwargs)
-
-    class Meta:
-        ordering = ['name']
-        verbose_name = "Restaurant"
-        verbose_name_plural = "Restaurants"
-
-    def __str__(self):
-        return self.code            
-
 def generate_coupon_code(length=10, max_attempts=10):
     if length <=0:
         raise ValueError("Coupon code length must be greater than zero.")
