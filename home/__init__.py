@@ -22,9 +22,9 @@ class  Coupon(models.Model):
         super().save(*args, **kwargs)
 
     class Meta:
-        ordering = ['-created_at']
-        verbose_name = "Coupon"
-        verbose_name_plural = "Coupons"
+        ordering = ['name']
+        verbose_name = "Restaurant"
+        verbose_name_plural = "Restaurants"
 
     def __str__(self):
         return self.code            
@@ -85,8 +85,9 @@ class Order(models.Model):
             default='pending',
             db_index=True
         )
+        objects = models.Manager()
 
-        ve_orders = ActiveOrderManager()
+        active_orders = ActiveOrderManager()
 
         class Meta:
             ordering = ['-created_at']
