@@ -76,7 +76,10 @@ class Order(models.Model):
             ('delivered', 'Delivered'),
             ('cancelled', 'Cancelled'),
         ]
-          
+
+        objects = models.Manager()
+        active_orders = ActiveOrderManager()
+
         created_at = models.DateTimeField(auto_now_add=True)
         total_amount = models.DecimalField(max_digits=10, decimal_places=2, default=Decimal('0.00'))
         status = models.CharField(
