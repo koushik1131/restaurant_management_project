@@ -3,12 +3,16 @@ import secrets
 import string
 from decimal import Decimal
 from django.db.models import Manager
+from django.utils.translation import gettext_lazy as _
+from django.db.utils import IntegrityError
+from django.core.exceptions import ValidationError
 
 class ActiveOrderManager(Manager):
     def get_queryset(self):
         return super().get_queryset().filter(status__in=['pending', 'processing'])
 
 ALPHANUMERIC_CHARS = string.ascii_uppercase + string.digits
+CODE_LENGTH = 10
 
 def generate_coupon_code(length=10, max_attempts=10):
     if length <=0:
