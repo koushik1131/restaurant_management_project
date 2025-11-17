@@ -52,6 +52,9 @@ class Coupon(models.Model):
     def __str__(self):
         return self.code
 
+class ActiveOrderManager(Manager):
+    def get_queryset(self):
+        return super().get_queryset.filter(status__in=['pending','processing'])
 
 class Order(models.Model):
 
