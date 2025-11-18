@@ -14,21 +14,6 @@ class ActiveOrderManager(Manager):
 ALPHANUMERIC_CHARS = string.ascii_uppercase + string.digits
 CODE_LENGTH = 10
 
-def generate_coupon_code(length=10, max_attempts=10):
-    if length <=0:
-        raise ValueError("Coupon code length must be greater than zero.")
-
-    for attempt in range(max_attempts):
-        code = ''.join(secrets.choice(ALPHANUMERIC_CHARS) for _ in range(length))
-
-        if not Coupon.objects.filter(code=code).exists():
-            return code
-
-    raise RuntimeError(
-        f"could not generate a unique coupon code after {max_attempts} attempts."
-        "consider increasing the length or max_attempts."
-    )            
-
 class Coupon(models.Model):
     code = models.CharField(max_length=50, unique=True, help_text="The unique code for the coupon.")
     is_active = models.BooleanField(default=True)
@@ -52,9 +37,20 @@ class Coupon(models.Model):
     def __str__(self):
         return self.code
 
-class ActiveOrderManager(Manager):
-    def get_queryset(self):
-        return super().get_queryset.filter(status__in=['pending','processing'])
+def generate_coupon_code(length=10, max_attempts=10):
+    if length <=0:
+        raise ValueError("Coupon code lenth must be greater than zero.")
+
+    for attempt in range(max_attempts):
+        code = ''.join(secrets.choice(ALPHANUMERIC_CHARS) for _ in range(lenth))
+
+        if not Coupon.objects.filter(code=code).exists():
+            return code
+
+    raise RuntimeError(
+        f"could not generate a unique coupon code after {max_attempts} attempts."
+        "consider increasing the length or max_attempts."
+    )            
 
 class Order(models.Model):
 
