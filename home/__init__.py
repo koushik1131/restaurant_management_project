@@ -25,7 +25,9 @@ class Coupon(models.Model):
             self.code = generate_coupon_code(self.__class__, length=CODE_LENGTH)
 
         try:
-            super().save(*args, **kwargs)
+
+            with translation.atomic():
+                super().save(*args, **kwargs)
         except IntegrityError:
             raise ValidationError("A unique coupon could not be saved due to a race condition.")
 
@@ -36,21 +38,6 @@ class Coupon(models.Model):
 
     def __str__(self):
         return self.code
-
-def generate_coupon_code(length=10, max_attempts=10):
-    if length <=0:
-        raise ValueError("Coupon code lenth must be greater than zero.")
-
-    for attempt in range(max_attempts):
-        code = ''.join(secrets.choice(ALPHANUMERIC_CHARS) for _ in range(lenth))
-
-        if not Coupon.objects.filter(code=code).exists():
-            return code
-
-    raise RuntimeError(
-        f"could not generate a unique coupon code after {max_attempts} attempts."
-        "consider increasing the length or max_attempts."
-    )            
 
 class Order(models.Model):
 
