@@ -24,12 +24,7 @@ class Coupon(models.Model):
         if not self.pk and not self.code:
             self.code = generate_coupon_code(self.__class__, length=CODE_LENGTH)
 
-        try:
-
-            with translation.atomic():
-                super().save(*args, **kwargs)
-        except IntegrityError:
-            raise ValidationError("A unique coupon could not be saved due to a race condition.")
+        super().save(*args, **kwargs)    
 
     class Meta:
         ordering = ['-created_at']
