@@ -64,4 +64,16 @@ class Order(models.Model):
             verbose_name_plural = "Orders"
 
         def __str__(self):
-            return f"Order #{self.pk} - {self.get_status_display()}"    
+            return f"Order #{self.pk} - {self.get_status_display()}"
+class Restaurant(models.Model):
+    name = models.CharField(max_length=255, unique=True)
+    address = models.TextField()
+    phone = models.CharField(max_length=20, blank=True)
+    is_open = models.BooleanField(default=True)
+
+    class Meta:
+        verbose_name = "Restaurant"
+        verbose_name_plural = "Restaurants"
+
+    def __str__(self):
+        return self.name    
