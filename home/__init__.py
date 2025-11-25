@@ -7,6 +7,12 @@ from django.utils.translation import gettext_lazy as _
 from django.db.utils import IntegrityError
 from django.core.exceptions import ValidationError
 
+def generate_coupon_code(model_class, length=CODE_LENGTH):
+    while True:
+        code = ''.join(secrets.choice(ALPHANUMERIC_CHARS) for i in range(length))
+        if not model_class.objects.filter(code=code).exists():
+            return code
+
 class ActiveOrderManager(Manager):
     def get_queryset(self):
         return super().get_queryset().filter(status__in=['pending', 'processing'])
