@@ -83,3 +83,33 @@ class Restaurant(models.Model):
 
     def __str__(self):
         return self.name    
+
+class LoyaltyProgram(models.Model):
+    name = models.CharField(
+        max_length=50,
+        unique=True,
+        verbose_name=_("Tier Name"),
+        help_text=_("The unique name of the loyalty tier (e.g., Bronze, Silver).")
+    )
+    points_required = models.IntegerField(
+        unique=True,
+        verbose_name=_("Points Required"),
+        help_text=_("The minimum number of loyalty points required to reach this tier.")
+    )
+    discount_percentage = models.DecimalField(
+        max_digits=5,
+        decimal_places=2,
+        verbose_name=_("Discount Percentage"),
+        help_text=_("The percentage discout customer in this tier receive.")
+    )
+    description = models.TextField(
+        verbose_name=_("Benefits Description"),
+        help_text=_("A brief explanation of the benefits for this tier.")
+    )
+
+    class Meta:
+        ordering = ['points_required']
+        verbose_name= "Loyalty program Tier"
+        verbose_name_plural = "Loyalty Program Tiers"
+    def __str__(self):
+        return f"{self.name} ({self.points_required} pts)"    
