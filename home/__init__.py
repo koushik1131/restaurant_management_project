@@ -4,8 +4,6 @@ import string
 from decimal import Decimal
 from django.db.models import Manager
 from django.utils.translation import gettext_lazy as _
-from django.db.utils import IntegrityError
-from django.core.exceptions import ValidationError
 
 def generate_coupon_code(model_class, length=CODE_LENGTH):
     while True:
@@ -62,6 +60,13 @@ class Order(models.Model):
             choices=STATUS_CHOICES,
             default='pending',
             db_index=True
+        )
+        coupon = models.ForeignKey(
+            Coupon,
+            on_delete=models.SET_NULL,
+            null=True,
+            blank=True,
+            help_text="Coupon applied to this order."
         )
     
         class Meta:
