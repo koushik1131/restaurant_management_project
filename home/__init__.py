@@ -38,6 +38,29 @@ class Coupon(models.Model):
     def __str__(self):
         return self.code
 
+class PaymentMethod(models.Model):
+    name = models.CharField(
+        max_length=50,
+        unique=True,
+        help_text="A clear name for the payment method (e.g., 'Credit Card', 'Cash')."
+    )
+    description = models.TextField(
+        blank=True,
+        null=True,
+        help_text="A bried explanation of the payment method."
+    )
+    is_active = models.BooleanField(
+        default=True,
+        help_text="Indicated if the payment method is currently available."
+    )
+
+    class Meta:
+        verbose_name = "Payment Method"
+        verbose_name_plural = "Payment Methods"
+        ordering = ['name']
+    def __str__(self):
+        return self.name    
+
 class Order(models.Model):
 
         """Model for a customer order."""
