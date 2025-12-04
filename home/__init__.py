@@ -32,8 +32,8 @@ class Coupon(models.Model):
 
     class Meta:
         ordering = ['-created_at']
-        verbose_name = "Coupon"
-        verbose_name_plural = "Coupons"
+        verbose_name = _("Coupon")
+        verbose_name_plural = _("Coupons")
 
     def __str__(self):
         return self.code
@@ -42,21 +42,21 @@ class PaymentMethod(models.Model):
     name = models.CharField(
         max_length=50,
         unique=True,
-        help_text="A clear name for the payment method (e.g., 'Credit Card', 'Cash')."
+        help_text=_("A clear name for the payment method (e.g., 'Credit Card', 'Cash').")
     )
     description = models.TextField(
         blank=True,
         null=True,
-        help_text="A bried explanation of the payment method."
+        help_text=_("A bried explanation of the payment method.")
     )
     is_active = models.BooleanField(
         default=True,
-        help_text="Indicated if the payment method is currently available."
+        help_text=_("Indicated if the payment method is currently available.")
     )
 
     class Meta:
-        verbose_name = "Payment Method"
-        verbose_name_plural = "Payment Methods"
+        verbose_name = _("Payment Method")
+        verbose_name_plural = _("Payment Methods")
         ordering = ['name']
     def __str__(self):
         return self.name    
@@ -66,11 +66,11 @@ class Order(models.Model):
         """Model for a customer order."""
 
         STATUS_CHOICES = [
-            ('pending', 'Pending payment'),
-            ('processing', 'Processing'),
-            ('shipped', 'Shipped'),
-            ('delivered', 'Delivered'),
-            ('cancelled', 'Cancelled'),
+            ('pending', _('Pending payment')),
+            ('processing', _('Processing')),
+            ('shipped', ('Shipped')),
+            ('delivered', _('Delivered')),
+            ('cancelled', _('Cancelled')),
         ]
 
         objects = models.Manager()
@@ -94,8 +94,8 @@ class Order(models.Model):
     
         class Meta:
             ordering = ['-created_at']
-            verbose_name = "Order"
-            verbose_name_plural = "Orders"
+            verbose_name = _("Order")
+            verbose_name_plural = _("Orders")
 
         def __str__(self):
             return f"Order #{self.pk} - {self.get_status_display()}"
@@ -106,8 +106,8 @@ class Restaurant(models.Model):
     is_open = models.BooleanField(default=True)
 
     class Meta:
-        verbose_name = "Restaurant"
-        verbose_name_plural = "Restaurants"
+        verbose_name = _("Restaurant")
+        verbose_name_plural = _("Restaurants")
 
     def __str__(self):
         return self.name    
@@ -137,7 +137,7 @@ class LoyaltyProgram(models.Model):
 
     class Meta:
         ordering = ['points_required']
-        verbose_name= "Loyalty program Tier"
-        verbose_name_plural = "Loyalty Program Tiers"
+        verbose_name= _("Loyalty program Tier")
+        verbose_name_plural = _("Loyalty Program Tiers")
     def __str__(self):
         return f"{self.name} ({self.points_required} pts)"    
