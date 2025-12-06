@@ -8,7 +8,7 @@ from django.utils.translation import gettext_lazy as _
 def generate_coupon_code(model_class, length=CODE_LENGTH):
     while True:
         code = ''.join(secrets.choice(ALPHANUMERIC_CHARS) for i in range(length))
-        if not model_class.objects.filter(code=code).exists():
+        if not model_class.objects.filter(**{field_name:code}).exists():
             return code
 
 class ActiveOrderManager(Manager):
@@ -17,6 +17,8 @@ class ActiveOrderManager(Manager):
 
 ALPHANUMERIC_CHARS = string.ascii_uppercase + string.digits
 CODE_LENGTH = 10
+ORDER_ID_CHAR = string.digits
+ORDER_ID_LENGTH = 10
 
 class Coupon(models.Model):
     code = models.CharField(max_length=50, unique=True, help_text="The unique code for the coupon.")
@@ -76,6 +78,13 @@ class Order(models.Model):
         objects = models.Manager()
         active_orders = ActiveOrderManager()
 
+        order_number = models.CharField(
+            max_length=15,
+            unique=True,
+            editable=False,
+            verbose_name=_("Oreder Number")
+        )
+
         created_at = models.DateTimeField(auto_now_add=True)
         total_amount = models.DecimalField(max_digits=10, decimal_places=2, default=Decimal('0.00'))
         status = models.CharField(
@@ -91,6 +100,10 @@ class Order(models.Model):
             blank=True,
             help_text="Coupon applied to this order."
         )
+        def save(self, *args, **kwargs):
+            if not self.pk and not self.order_number:
+                self.order_number = generate_order_number(self.__class__)
+            super().save(*args, **kwargs)    
     
         class Meta:
             ordering = ['-created_at']
@@ -98,7 +111,9 @@ class Order(models.Model):
             verbose_name_plural = _("Orders")
 
         def __str__(self):
+
             return f"Order #{self.pk} - {self.get_status_display()}"
+
 class Restaurant(models.Model):
     name = models.CharField(max_length=255, unique=True)
     address = models.TextField()
