@@ -5,7 +5,7 @@ from decimal import Decimal
 from django.db.models import Manager
 from django.utils.translation import gettext_lazy as _
 
-def generate_coupon_code(model_class, length=CODE_LENGTH):
+def generate_unique_code(model_class,field_name, chars, length):
     while True:
         code = ''.join(secrets.choice(ALPHANUMERIC_CHARS) for i in range(length))
         if not model_class.objects.filter(**{field_name:code}).exists():
@@ -28,7 +28,7 @@ class Coupon(models.Model):
     def save(self,*args,**kwargs):
 
         if not self.pk and not self.code:
-            self.code = generate_coupon_code(self.__class__, length=CODE_LENGTH)
+            self.code = generate_coupon_code(self.__class__, field_name='code' , length=CODE_LENGTH)
 
         super().save(*args, **kwargs)    
 
@@ -60,6 +60,7 @@ class PaymentMethod(models.Model):
         verbose_name = _("Payment Method")
         verbose_name_plural = _("Payment Methods")
         ordering = ['name']
+
     def __str__(self):
         return self.name    
 
@@ -82,7 +83,7 @@ class Order(models.Model):
             max_length=15,
             unique=True,
             editable=False,
-            verbose_name=_("Oreder Number")
+            verbose_name=_("Order Number")
         )
 
         created_at = models.DateTimeField(auto_now_add=True)
@@ -102,7 +103,7 @@ class Order(models.Model):
         )
         def save(self, *args, **kwargs):
             if not self.pk and not self.order_number:
-                self.order_number = generate_order_number(self.__class__)
+                self.order_number = generate_order_number(self.__class__, length=ORDER_ID_LENGTH)
             super().save(*args, **kwargs)    
     
         class Meta:
@@ -152,7 +153,7 @@ class LoyaltyProgram(models.Model):
 
     class Meta:
         ordering = ['points_required']
-        verbose_name= _("Loyalty program Tier")
+        verbose_name= _("Loyalty Program Tier")
         verbose_name_plural = _("Loyalty Program Tiers")
     def __str__(self):
         return f"{self.name} ({self.points_required} pts)"    
