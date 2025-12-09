@@ -7,8 +7,8 @@ from django.utils.translation import gettext_lazy as _
 
 def generate_unique_code(model_class,field_name, chars, length):
     while True:
-        code = ''.join(secrets.choice(ALPHANUMERIC_CHARS) for i in range(length))
-        if not model_class.objects.filter(**{field_name:code}).exists():
+        code = ''.join(secrets.choice(chars) for i in range(length))
+        if not model_class.objects.filter(**{field_name: code}).exists():
             return code
 
 class ActiveOrderManager(Manager):
@@ -28,7 +28,12 @@ class Coupon(models.Model):
     def save(self,*args,**kwargs):
 
         if not self.pk and not self.code:
-            self.code = generate_coupon_code(self.__class__, field_name='code' , length=CODE_LENGTH)
+            self.code = generate_coupon_code(
+                self.__class__,
+                field_name='code',
+                chars=ALPHANUMERIC_CHARS, 
+                length=CODE_LENGTH
+                )
 
         super().save(*args, **kwargs)    
 
@@ -80,7 +85,7 @@ class Order(models.Model):
         active_orders = ActiveOrderManager()
 
         order_number = models.CharField(
-            max_length=15,
+            max_length=ORDER_ID_LENGTH,
             unique=True,
             editable=False,
             verbose_name=_("Order Number")
@@ -103,7 +108,12 @@ class Order(models.Model):
         )
         def save(self, *args, **kwargs):
             if not self.pk and not self.order_number:
-                self.order_number = generate_order_number(self.__class__, length=ORDER_ID_LENGTH)
+                self.order_number = generate_order_number(
+                    self.__class__,
+                    field_name='order_number',
+                    chars=ORDER_ID_CHAR,
+                    length=ORDER_ID_LENGTH
+                )
             super().save(*args, **kwargs)    
     
         class Meta:
