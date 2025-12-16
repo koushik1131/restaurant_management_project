@@ -30,7 +30,7 @@ class Coupon(models.Model):
         if not self.pk and not self.code:
             self.code = generate_unique_code(
                 self.__class__,
-                field_name='code',
+                field_name='order_number',
                 chars=ALPHANUMERIC_CHARS, 
                 length=CODE_LENGTH
                 )
