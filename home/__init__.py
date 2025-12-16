@@ -25,7 +25,7 @@ class Coupon(models.Model):
     is_active = models.BooleanField(default=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
-    def save(self,*args,**kwargs):
+    def save(self, *args, **kwargs):
 
         if not self.pk and not self.code:
             self.code = generate_unique_code(
@@ -54,11 +54,11 @@ class PaymentMethod(models.Model):
     description = models.TextField(
         blank=True,
         null=True,
-        help_text=_("A bried explanation of the payment method.")
+        help_text=_("A brief explanation of the payment method.")
     )
     is_active = models.BooleanField(
         default=True,
-        help_text=_("Indicated if the payment method is currently available.")
+        help_text=_("Indicates if the payment method is currently available.")
     )
 
     class Meta:
@@ -108,7 +108,7 @@ class Order(models.Model):
         )
         def save(self, *args, **kwargs):
             if not self.pk and not self.order_number:
-                self.order_number = generate_unique_number(
+                self.order_number = generate_unique_code (
                     self.__class__,
                     field_name='order_number',
                     chars=ORDER_ID_CHAR,
@@ -154,7 +154,7 @@ class LoyaltyProgram(models.Model):
         max_digits=5,
         decimal_places=2,
         verbose_name=_("Discount Percentage"),
-        help_text=_("The percentage discout customer in this tier receive.")
+        help_text=_("The percentage discount customer in this tier receive.")
     )
     description = models.TextField(
         verbose_name=_("Benefits Description"),
