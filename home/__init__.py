@@ -28,7 +28,7 @@ class Coupon(models.Model):
     def save(self,*args,**kwargs):
 
         if not self.pk and not self.code:
-            self.code = generate_coupon_code(
+            self.code = generate_unique_code(
                 self.__class__,
                 field_name='code',
                 chars=ALPHANUMERIC_CHARS, 
@@ -76,7 +76,7 @@ class Order(models.Model):
         STATUS_CHOICES = [
             ('pending', _('Pending payment')),
             ('processing', _('Processing')),
-            ('shipped', ('Shipped')),
+            ('shipped', _('Shipped')),
             ('delivered', _('Delivered')),
             ('cancelled', _('Cancelled')),
         ]
@@ -123,7 +123,7 @@ class Order(models.Model):
 
         def __str__(self):
 
-            return f"Order #{self.pk} - {self.get_status_display()}"
+            return f"Order #{self.order_number} - {self.get_status_display()}"
 
 class Restaurant(models.Model):
     name = models.CharField(max_length=255, unique=True)
