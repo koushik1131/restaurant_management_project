@@ -108,7 +108,7 @@ class Order(models.Model):
         )
         def save(self, *args, **kwargs):
             if not self.pk and not self.order_number:
-                self.order_number = generate_order_number(
+                self.order_number = generate_unique_number(
                     self.__class__,
                     field_name='order_number',
                     chars=ORDER_ID_CHAR,
