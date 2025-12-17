@@ -30,7 +30,7 @@ class Coupon(models.Model):
         if not self.pk and not self.code:
             self.code = generate_unique_code(
                 self.__class__,
-                field_name='order_number',
+                field_name='code',
                 chars=ALPHANUMERIC_CHARS, 
                 length=CODE_LENGTH
                 )
@@ -106,6 +106,14 @@ class Order(models.Model):
             blank=True,
             help_text="Coupon applied to this order."
         )
+
+        payment_method = models.ForeignKey(
+            PaymentMethod,
+            on_delete=models.PROTECT,
+            null=True,
+            blank=True,
+            help_text="The payment method used for this order."
+        )
         def save(self, *args, **kwargs):
             if not self.pk and not self.order_number:
                 self.order_number = generate_unique_code (
@@ -114,6 +122,7 @@ class Order(models.Model):
                     chars=ORDER_ID_CHAR,
                     length=ORDER_ID_LENGTH
                 )
+                
             super().save(*args, **kwargs)    
     
         class Meta:
